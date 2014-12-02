@@ -1,5 +1,5 @@
 app.controller('MenuController', ['$scope', 'ModalService','AuthService', '$state', '$rootScope', function($scope, ModalService, AuthService, $state, $rootScope) {
-    //$scope.errorMsg = "Incorrect username/password combination";
+
     $scope.logon = function() {
 
         ModalService.showModal({
@@ -11,11 +11,21 @@ app.controller('MenuController', ['$scope', 'ModalService','AuthService', '$stat
         }).then(function(modal) {
             modal.element.modal();
             modal.close.then(function(result) {
+                if(result.username === null){
+                    $scope.errorMsg = "Incorrect username";
+                }
+               else if (result.password === null)
+                {
+                    $scope.errorMsg = "Incorrect password";
+                }
+                else
+                {
+                    $scope.errorMsg = "Incorrect username/password";
+                }
 
             });
         }).catch(function(error) {
             // error contains a detailed error message.
-            console.log(error);
         });
 
     };

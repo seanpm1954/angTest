@@ -8,6 +8,9 @@ angular.module('UserService',[])
             return $http.post('api/users/' + username + '/' + password).then(function success(response){
                 AuthService.setToken(response.data.authLevel);
                 return response;
+            },
+            function error(response){
+                return response;
             });
         }
 

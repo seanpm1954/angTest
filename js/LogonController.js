@@ -3,6 +3,7 @@ app.controller('LogonController', ['$scope','$rootScope', '$state', 'title', 'cl
   $scope.username = null;
   $scope.password = null;
   $scope.title = title;
+    $scope.erMsg = "";
     var vm = this;
     $scope.user = $rootScope.user;
   
@@ -12,7 +13,7 @@ app.controller('LogonController', ['$scope','$rootScope', '$state', 'title', 'cl
       username: $scope.username,
       password: $scope.password
     }, 500); // close, but give 500ms for bootstrap to animate
-      UserService.login($scope.username, $scope.password).then( function success(response){
+      UserService.login($scope.username, $scope.password).then(function success(response){
           vm.user = response.data;
           $rootScope.user = vm.user;
 
@@ -27,19 +28,24 @@ app.controller('LogonController', ['$scope','$rootScope', '$state', 'title', 'cl
               $scope.user=vm.user;
               //user authenticated
               $state.go('after');
-          }else{
-              //user not found
-              //incorrect username / password combo..
-              $state.go('error');
+          //}else{
+          //    //user not found
+          //    //incorrect username / password combo..
+          //    $scope.errorMessage = "unknown username or password";
+          //    $state.go('error');
+          //
           }
 
 
-
-      }, handleError);
+      }, handleError());
  };
+    $scope.closeX = function(){
+        $state.go('blank');
+    }
 
-    function handleError(response){
-        alert('Error: ' + response.data);
+    function handleError(){
+        $rootScope.erMsg = 'Logon failed';
+        $state.go('error');
     }
 
     $scope.logout = function(){

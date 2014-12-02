@@ -22,18 +22,19 @@ app.config(function($stateProvider, AuthServiceProvider){
             url: '/error',
             templateUrl: 'partials/error.html'
         })
-        .state('/',{
-            url: '/',
+        .state('blank',{
+            url: '/blank',
             templateUrl: 'partials/blank.html'
         })
 
 })
-    .run(function($rootScope, AuthService){
+    .run(function($rootScope, AuthService, $state){
         $rootScope.$on('$stateChangeStart',function(event,next){
             var isAuth = next.data.isLoggedOn;
             if(AuthService.getToken() != 1){
-
+                $rootScope.erMsg = "You must logon to view this page";
                 event.preventDefault();
+                $state.go('blank')
             }else{
 
             }
